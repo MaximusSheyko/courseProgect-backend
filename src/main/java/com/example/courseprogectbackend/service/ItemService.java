@@ -18,8 +18,6 @@ public interface ItemService {
 
     Optional<List<Item>> findItemsByCollectionId(long id);
 
-    List<Item> findItemsByTagName(@NonNull String name);
-
     boolean exists(long id);
 
     boolean exists(long id, String tagName);
@@ -27,4 +25,6 @@ public interface ItemService {
     Optional<List<Item>> findItemsOrderByDateCreationByLimit(long limit);
 
     void recordDateCreationItem(@NonNull Item item);
+
+    Optional<List<Item>> findItemsByTagName(@NonNull String name);
 }

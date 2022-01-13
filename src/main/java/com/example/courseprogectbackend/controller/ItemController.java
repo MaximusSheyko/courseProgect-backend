@@ -2,6 +2,7 @@ package com.example.courseprogectbackend.controller;
 
 import com.example.courseprogectbackend.dto.ItemDto;
 import com.example.courseprogectbackend.mapper.ItemMapper;
+import com.example.courseprogectbackend.model.Item;
 import com.example.courseprogectbackend.service.CollectionService;
 import com.example.courseprogectbackend.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class ItemController {
     }
 
     @PostMapping("/api/items/save")
-    @ResponseStatus(value = HttpStatus.OK, reason = "success save")
+    @ResponseStatus(value = HttpStatus.OK, reason = "item saving success")
     public void save(@Param ("collection_id") long collectionId, @RequestBody ItemDto itemDto){
         if (collectionService.exists(collectionId, itemDto.getName())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Item is already exists in this collection");
@@ -72,5 +73,11 @@ public class ItemController {
         }else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Collection not found");
         }
+    }
+
+    @GetMapping("/api/items/by-tag_name")
+    public List<ItemDto> itemsByTagName(@Param("name") String name){
+        return itemMapper.toItemsDto(itemService.findItemsByTagName(name)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "items not found by this tag")));
     }
 }

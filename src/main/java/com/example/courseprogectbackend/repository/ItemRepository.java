@@ -6,9 +6,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ItemRepository extends JpaRepository<Item, Long> {
-    List<Item> findItemsByTags_NameContains(String tagsName);
 
     @Query(value = "SELECT * FROM items ORDER BY date_creation DESC LIMIT :limit", nativeQuery = true)
     List<Item> findAllOrderByDateCreationByLimit(@Param("limit") long limit);
@@ -18,4 +18,6 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     boolean existsByNameAndCollection_Id(String name,Long collectionId);
 
     boolean existsByIdAndTags_NameContains(Long id,String tagsName);
+
+    Optional<List<Item>> findAllByTags_NameContains(String tags_name);
 }

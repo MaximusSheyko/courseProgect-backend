@@ -2,14 +2,19 @@ package com.example.courseprogectbackend.controller;
 
 import com.example.courseprogectbackend.dto.TagDto;
 import com.example.courseprogectbackend.mapper.TagsMapper;
+import com.example.courseprogectbackend.model.Item;
+import com.example.courseprogectbackend.service.ItemService;
 import com.example.courseprogectbackend.service.TagService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -19,7 +24,6 @@ public class TagController {
 
     private final TagsMapper tagsMapper;
 
-
     public TagController(TagService tagService, TagsMapper tagsMapper) {
         this.tagService = tagService;
         this.tagsMapper = tagsMapper;
@@ -28,7 +32,7 @@ public class TagController {
     @GetMapping("/api/tags")
     public Set<TagDto> tags(){
         return tagsMapper.ToTagsDto(tagService.getTags()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.CONFLICT, "Tags not found")));
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.CONFLICT, "Tags not found")));
     }
 
     @GetMapping("/api/tags/add")

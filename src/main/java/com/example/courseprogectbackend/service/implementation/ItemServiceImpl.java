@@ -50,11 +50,6 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<Item> findItemsByTagName(@NonNull String name) {
-        return itemRepository.findItemsByTags_NameContains(name);
-    }
-
-    @Override
     public boolean exists(long id) {
         return itemRepository.existsById(id);
     }
@@ -72,5 +67,10 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public void recordDateCreationItem(@NonNull Item item) {
         item.setDateCreation(dateRecorder.currentTime());
+    }
+
+    @Override
+    public Optional<List<Item>> findItemsByTagName(String name) {
+        return itemRepository.findAllByTags_NameContains(name);
     }
 }
