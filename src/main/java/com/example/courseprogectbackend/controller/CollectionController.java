@@ -6,12 +6,16 @@ import com.example.courseprogectbackend.service.CollectionService;
 import com.example.courseprogectbackend.service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/collections")
 public class CollectionController {
 
     private final CollectionService collectionService;
@@ -28,19 +32,21 @@ public class CollectionController {
         this.topicService = topicService;
     }
 
-    @GetMapping("/api/collections")
+    @GetMapping()
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public List<CollectionDto> collections() {
-        return collectionMapper.toCollectionsDto(collectionService.getCollections()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Collections not found")));
+        System.out.println(((UserDetails)SecurityContextHolder.getContext()
+            .getAuthentication().getPrincipal()).getUsername() + "<".repeat(10));
+        return collectionMapper.toCollectionsDto(collectionService.getCollections());
     }
 
-    @GetMapping("/api/collection/with-most-items")
+    @GetMapping("/with-most-items")
     public List<CollectionDto>  collectionWithMostItems(@RequestParam("limit") int limit){
-        return collectionMapper.toCollectionsDto(collectionService.getCollectionsWithMostItems(limit)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Collections not found")));
+        return collectionMapper.toCollectionsDto(collectionService.getCollectionsWithMostItems(limit));
     }
 
-    @DeleteMapping("/api/collections/delete")
+    @DeleteMapping("/delete")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public void delete(@RequestParam("id") long id) {
         if (collectionService.exists(id)) {
             collectionService.deleteById(id);
@@ -49,7 +55,8 @@ public class CollectionController {
         }
     }
 
-    @PostMapping("/api/collections/edit")
+    @PostMapping("/edit")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @ResponseStatus(value = HttpStatus.OK, reason = "collection update success")
     public void edit(@RequestParam("id") long id,@RequestBody CollectionDto collectionDto){
         var collection = collectionService.findById(id);
@@ -63,7 +70,8 @@ public class CollectionController {
         }
     }
 
-    @PostMapping("/api/collections/save")
+    @PostMapping("/save")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public void save(@RequestBody CollectionDto dto) {
         var collection = collectionMapper.toCollection(dto);
         var topic = topicService.findByTitle(dto.getTopic());

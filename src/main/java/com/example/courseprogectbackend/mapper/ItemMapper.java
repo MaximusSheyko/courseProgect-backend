@@ -3,9 +3,11 @@ package com.example.courseprogectbackend.mapper;
 import com.example.courseprogectbackend.dto.ItemDto;
 import com.example.courseprogectbackend.model.Item;
 import com.example.courseprogectbackend.model.Tag;
+import com.example.courseprogectbackend.repository.UserRepository;
 import lombok.NonNull;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Objects;

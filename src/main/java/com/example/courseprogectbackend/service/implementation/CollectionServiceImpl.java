@@ -8,7 +8,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,12 +22,12 @@ public class CollectionServiceImpl implements CollectionService {
     }
 
     @Override
-    public Optional<List<Collection>> getCollections() {
-        return Optional.of(collectionRepository.findAll());
+    public List<Collection> getCollections() {
+        return collectionRepository.findAll();
     }
 
     @Override
-    public Optional<List<Collection>> getCollectionsWithMostItems(int limit) {
+    public List<Collection> getCollectionsWithMostItems(int limit) {
         return collectionRepository.findCollectionsIdWithMostItems(PageRequest.ofSize(limit));
     }
 

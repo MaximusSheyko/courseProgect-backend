@@ -6,12 +6,14 @@ import com.example.courseprogectbackend.service.CommentService;
 import com.example.courseprogectbackend.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/comments")
 public class CommentController {
 
     private final CommentService commentService;
@@ -27,13 +29,13 @@ public class CommentController {
         this.itemService = itemService;
     }
 
-    @GetMapping("/api/comments")
+    @GetMapping()
     public List<CommentDto> comments() {
-        return commentMapper.toCommentsDto(commentService.getComments()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Comments no found")));
+        return commentMapper.toCommentsDto(commentService.getComments());
     }
 
-    @PostMapping("/api/comments/save")
+    @PostMapping("/save")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @ResponseStatus(value = HttpStatus.OK, reason = "topic saving success")
     public void edit (@RequestBody CommentDto commentDto){
         var comment = commentMapper.toComment(commentDto);
@@ -43,17 +45,17 @@ public class CommentController {
         }
     }
 
-    @GetMapping("/api/comments/by-item-id")
+    @GetMapping("/by-item-id")
     public List<CommentDto> commentsFromItem(@RequestParam("item_id") long itemId){
         if (itemService.exists(itemId)){
-            return commentMapper.toCommentsDto(commentService.getCommentsByItemId(itemId)
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "comments not found")));
+            return commentMapper.toCommentsDto(commentService.getCommentsByItemId(itemId));
         }else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "item not found");
         }
     }
 
-    @PostMapping("/api/comments/edit")
+    @PostMapping("/edit")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public void edit(@RequestParam("id") long id,@RequestBody CommentDto dto){
         var comment = commentService.findByid(id);
         if (comment.isPresent()){

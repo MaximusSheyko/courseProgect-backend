@@ -3,6 +3,7 @@ package com.example.courseprogectbackend.service.implementation;
 import com.example.courseprogectbackend.Util.DateRecorder;
 import com.example.courseprogectbackend.model.Item;
 import com.example.courseprogectbackend.repository.ItemRepository;
+import com.example.courseprogectbackend.search.implementation.ItemSearchImpl;
 import com.example.courseprogectbackend.service.ItemService;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +19,13 @@ public class ItemServiceImpl implements ItemService {
 
     private final DateRecorder dateRecorder;
 
+    private final ItemSearchImpl search;
+
     @Autowired
-    public ItemServiceImpl(ItemRepository itemRepository,DateRecorder dateRecorder) {
+    public ItemServiceImpl(ItemRepository itemRepository, DateRecorder dateRecorder, ItemSearchImpl search) {
         this.itemRepository = itemRepository;
         this.dateRecorder = dateRecorder;
+        this.search = search;
     }
 
     @Override
@@ -30,8 +34,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Optional<List<Item>> getItems() {
-        return Optional.of(itemRepository.findAll());
+    public List<Item> getItems() {
+        return itemRepository.findAll();
     }
 
     @Override
@@ -45,8 +49,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Optional<List<Item>> findItemsByCollectionId(long id) {
-        return Optional.of(itemRepository.findAllByCollection_Id(id));
+    public List<Item> findItemsByCollectionId(long id) {
+        return itemRepository.findAllByCollection_Id(id);
     }
 
     @Override
@@ -60,8 +64,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Optional<List<Item>> findItemsOrderByDateCreationByLimit(long limit) {
-        return Optional.of(itemRepository.findAllOrderByDateCreationByLimit(limit));
+    public List<Item> findItemsOrderByDateCreationByLimit(long limit) {
+        return itemRepository.findAllOrderByDateCreationByLimit(limit);
     }
 
     @Override
@@ -70,7 +74,12 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Optional<List<Item>> findItemsByTagName(String name) {
+    public List<Item> findItemsByTagName(String name) {
         return itemRepository.findAllByTags_NameContains(name);
+    }
+
+    @Override
+    public List<Item> searchItemsByQuery(String text, String...fields) {
+        return search.search(text, fields);
     }
 }

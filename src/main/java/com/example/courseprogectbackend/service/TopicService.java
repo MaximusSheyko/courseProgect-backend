@@ -8,7 +8,7 @@ import java.util.Optional;
 
 @Service
 public interface TopicService {
-    Optional<List<Topic>> getTopics();
+    List<Topic> getTopics();
 
     boolean exists(String title);
 

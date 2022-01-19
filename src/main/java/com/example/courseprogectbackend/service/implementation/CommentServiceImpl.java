@@ -19,7 +19,7 @@ public class CommentServiceImpl implements CommentService {
     private final DateRecorder dateRecorder;
 
     @Autowired
-    public CommentServiceImpl(CommentRepository commentRepository,DateRecorder dateRecorder) {
+    public CommentServiceImpl(CommentRepository commentRepository, DateRecorder dateRecorder) {
         this.commentRepository = commentRepository;
         this.dateRecorder = dateRecorder;
     }
@@ -35,12 +35,12 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Optional<List<Comment>> getComments() {
-        return Optional.of(commentRepository.findAll());
+    public List<Comment> getComments() {
+        return commentRepository.findAll();
     }
 
     @Override
-    public Optional<List<Comment>> getCommentsByItemId(long itemId) {
+    public List<Comment> getCommentsByItemId(long itemId) {
         return commentRepository.findAllByItem_Id(itemId);
     }
 
@@ -58,6 +58,4 @@ public class CommentServiceImpl implements CommentService {
     public Optional<Comment> findByid(long id) {
         return commentRepository.findById(id);
     }
-
-
 }

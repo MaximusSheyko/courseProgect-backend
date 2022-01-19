@@ -9,6 +9,8 @@ import java.util.List;
 @Setter
 public class UserProfileDto {
     private Long id;
-    private String name;
+
+    private String username;
+
     private List<String> roles;
 }

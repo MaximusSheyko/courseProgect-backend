@@ -10,21 +10,23 @@ public interface ItemService {
 
     void deleteById(Long id);
 
-    Optional<List<Item>> getItems();
+    List<Item> getItems();
 
     void save (@NonNull Item item);
 
     Optional<Item> findById(long id);
 
-    Optional<List<Item>> findItemsByCollectionId(long id);
+    List<Item> findItemsByCollectionId(long id);
 
     boolean exists(long id);
 
     boolean exists(long id, String tagName);
 
-    Optional<List<Item>> findItemsOrderByDateCreationByLimit(long limit);
+    List<Item> findItemsOrderByDateCreationByLimit(long limit);
 
     void recordDateCreationItem(@NonNull Item item);
 
-    Optional<List<Item>> findItemsByTagName(@NonNull String name);
+    List<Item> findItemsByTagName(@NonNull String name);
+
+    List<Item> searchItemsByQuery(String text,String... fields);
 }

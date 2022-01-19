@@ -2,14 +2,16 @@ package com.example.courseprogectbackend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.search.annotations.ContainedIn;
+import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Getter
 @Setter
-@EqualsAndHashCode(of = "name")
-@ToString(of = "name")
+@EqualsAndHashCode(of = "username")
+@ToString(of = "username")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -20,9 +22,12 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Field
     @Column(name = "name")
     private String name;
 
+
     @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
+    @ContainedIn
     private List<Item> items;
 }

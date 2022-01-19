@@ -15,7 +15,7 @@ public interface CommentMapper {
 
     @Mapping(target = "author", source = "user.name")
     @Mapping( target = "itemId", source = "item.id")
-    @Mapping( target = "dateCreation", dateFormat = "dd.MM.yyyy HH:mm:ss")
+    @Mapping( target = "dateCreation", dateFormat = FORMAT_DATE)
     CommentDto ToCommentDto(Comment comment);
 
 

@@ -5,13 +5,14 @@ import com.example.courseprogectbackend.mapper.TopicMapper;
 import com.example.courseprogectbackend.service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/api/topics")
 public class TopicController {
 
     private final TopicService topicService;
@@ -24,17 +25,17 @@ public class TopicController {
         this.topicMapper = topicMapper;
     }
 
-    @GetMapping("/api/topics")
+    @GetMapping()
     public Set<TopicDto> topics() {
-        return topicMapper.toTopicsDto(topicService.getTopics()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Topics not found")));
+        return topicMapper.toTopicsDto(topicService.getTopics());
     }
 
-    @PostMapping("/api/topics/create")
+    @PostMapping("/create")
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(value = HttpStatus.OK, reason = "Topic save success")
     public void create(@RequestBody TopicDto dto){
         if (topicService.exists(dto.getName())){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Topic is already created");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Topic is already created");
         }else {
             topicService.save(topicMapper.toTopic(dto));
         }

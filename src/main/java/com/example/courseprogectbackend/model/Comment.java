@@ -1,6 +1,9 @@
 package com.example.courseprogectbackend.model;
 
 import lombok.*;
+import org.hibernate.search.annotations.ContainedIn;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -22,6 +25,7 @@ public class Comment {
     private LocalDateTime dateCreation;
 
     @Column(name = "message")
+    @Field
     private String message;
 
     @ManyToOne()
@@ -30,6 +34,7 @@ public class Comment {
 
     @ManyToOne()
     @JoinColumn(name = "item_id")
+    @ContainedIn
     private Item item;
 }
 

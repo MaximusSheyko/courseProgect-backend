@@ -27,7 +27,7 @@ public class LikeServiceImpl implements LikeService {
     }
 
     @Override
-    public boolean existsByItemIdAndUserId(long itemId,long userId) {
+    public boolean existsByItemIdAndUserId(long itemId, long userId) {
         return likeRepository.existsByItem_IdAndUser_Id(itemId, userId);
     }
 }

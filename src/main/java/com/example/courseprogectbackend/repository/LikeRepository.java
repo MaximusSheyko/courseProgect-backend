@@ -8,7 +8,7 @@ import javax.transaction.Transactional;
 public interface LikeRepository extends CrudRepository<Like, Long> {
 
     @Transactional
-    void deleteByItem_IdAndUser_Id(long itemId,long userId);
+    void deleteByItem_IdAndUser_Id(long itemId, long userId);
 
-    boolean existsByItem_IdAndUser_Id(long itemId,long userId);
+    boolean existsByItem_IdAndUser_Id(long itemId, long userId);
 }

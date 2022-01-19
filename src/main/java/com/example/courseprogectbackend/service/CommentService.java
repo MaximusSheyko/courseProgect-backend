@@ -11,9 +11,9 @@ public interface CommentService {
 
     Optional<Comment> save(Comment comment);
 
-    Optional<List<Comment>> getComments();
+    List<Comment> getComments();
 
-    Optional<List<Comment>> getCommentsByItemId(long itemId);
+    List<Comment> getCommentsByItemId(long itemId);
 
     Optional<Comment> findByid(long id);
 

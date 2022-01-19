@@ -8,11 +8,17 @@ import java.util.List;
 @Getter
 @Setter
 public class ItemDto {
+
     private Long id;
+
     private String name;
+
     private String imageUrl;
+
     private String description;
+
     private String dateCreation;
+
     private List<TagDto> tags;
 
 }

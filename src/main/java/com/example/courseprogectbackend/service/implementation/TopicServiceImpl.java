@@ -20,8 +20,8 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public Optional<List<Topic>> getTopics() {
-        return Optional.of(topicRepository.findAll());
+    public List<Topic> getTopics() {
+        return topicRepository.findAll();
     }
 
     @Override
@@ -38,5 +38,4 @@ public class TopicServiceImpl implements TopicService {
     public Optional<Topic> findByTitle(String title) {
         return topicRepository.findByTitle(title);
     }
-
 }

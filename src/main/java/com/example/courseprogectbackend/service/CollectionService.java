@@ -8,9 +8,9 @@ import java.util.Optional;
 
 public interface CollectionService {
 
-    Optional<List<Collection>> getCollections();
+    List<Collection> getCollections();
 
-    Optional<List<Collection>> getCollectionsWithMostItems(int limit);
+    List<Collection> getCollectionsWithMostItems(int limit);
 
     void deleteById(long id);
 

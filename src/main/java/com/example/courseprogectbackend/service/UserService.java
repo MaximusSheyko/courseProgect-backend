@@ -18,4 +18,8 @@ public interface UserService {
     boolean existsById(long id);
 
     Optional<User> findByRoleName(String role);
+
+    Optional<User> findByName(String name);
+
+    boolean existsByName(String name);
 }
